@@ -28,30 +28,30 @@ import datetime
 
 class Tiny_task: #* esta clase gestiona todo internamente
     
-    def factory_reset_tinytask(): #* esta funcion borra dos los archivos de assets para que se reinicie de fabrica el programa
-        os.remove("assets.json")
-        os.remove("assets2.json") 
+    def factory_reset_tinytask(self): #* esta funcion borra dos los archivos de assets para que se reinicie de fabrica el programa
+        os.remove("data/task/assets.json")
+        os.remove("data/task/assets2.json") 
 
     def load(self):               #* esta funcion sirve para poder cargar todo el contenido del archivo assets1.json a la variable self.tasks
-        with open("assets.json","r") as assets:
+        with open("data/task/assets.json","r") as assets:
                 try:                              #? este try y except estan puestos para que si en el hipotetico caso de que alguien borre el contenido del archivo JSON entonces no deje de funcionar el programa
                     self.tasks = json.load(assets)
                 except (json.decoder.JSONDecodeError):
                     self.save()
 
     def save(self):               #* esta funcion sirve para guardar todo el contenido de la variable self.tasks dentro del archivo assets.json
-        with open("assets.json","w") as assets:
+        with open("data/task/assets.json","w") as assets:
             json.dump(self.tasks,assets)
 
     def load_order(self):         #*esta funcion hace lo mismo que la funcion load() solo carga el contenido del archivo assets2.json a order_interface
-        with open("assets2.json","r") as assets:
+        with open("data/task/assets2.json","r") as assets:
                 try:                              #* este try y except estan puestos para que si en el hipotetico caso de que alguien borre el contenido del archivo JSON entonces no deje de funcionar el programa
                     self.order_interface = json.load(assets)
                 except json.decoder.JSONDecodeError:
                     self.save_order()
 
     def save_order(self):         #*este tambien hace lo mismo pero con la variable self.order_interface
-        with open("assets2.json","w") as assets:
+        with open("data/task/assets2.json","w") as assets:
             json.dump(self.order_interface,assets)
 
     def __init__(self):           #* este metodo sirve para que la ruta de trabajo se cambie por la del archivo actual y tambien carga todo
@@ -74,8 +74,10 @@ class Tiny_task: #* esta clase gestiona todo internamente
                                                                                                                             #? el try es para que en el caso de que no haya "" en el diccionario ps no se detenga el programa
         
         n = 1    #* en esta parte se ordenan las tareas segun la clave que haya en la variable self.order_interface, por ahora solo estan las opciones por fecha y titulo 
-        self.tasks.sort( key = lambda x: x[self.order_interface])                                                      #! mañana tengo que convertir de alguna manera las fechas en objetos de la clase datetime para poder compararlas
-        string=""                                                                                                          #! mi idea es hacer que se guarde con el formato 2024/12/31 para luego convertir esa fecha/string a un objeto y luego de nuevo formatearla al imprimirla
+        self.tasks.sort( key = lambda x: x[self.order_interface])   
+                                                           #! mañana tengo que convertir de alguna manera las fechas en objetos de la clase datetime para poder compararlas
+        string=""    
+                                                                                                              #! mi idea es hacer que se guarde con el formato 2024/12/31 para luego convertir esa fecha/string a un objeto y luego de nuevo formatearla al imprimirla
         for i in self.tasks: #* bucle para sacar todo el contenido de la lista self.tasks
             if i["fecha"]!= "indefinido":
                 fecha_object = datetime.datetime.strptime(i["fecha"],("%Y/%m/%d"))#* aca se crea un objeto de la clase datetime y se coloca el string de la fecha y el formato de entrada
@@ -104,12 +106,3 @@ class Tiny_task: #* esta clase gestiona todo internamente
             input("Esa tarea no existe.\nPresiona enter para continuar.") #* si la tarea no existe 
                                             # identificar las tareas con numeros
         
-
-
-
-
-
-
-
-
-

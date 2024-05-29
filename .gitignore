@@ -1,1 +1,15 @@
-/__pycache__
+### Folder cache and virtual enviroment
+__pycache__/
+
+bin/
+
+include/
+
+lib/
+
+__pycache__/
+
+### Files of virtual enviroment
+*.cfg
+
+
